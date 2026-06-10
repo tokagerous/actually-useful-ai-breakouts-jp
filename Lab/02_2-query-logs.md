@@ -9,7 +9,7 @@
     <img width="1284" height="383" alt="image" src="https://github.com/user-attachments/assets/4bbdc5c3-f1fb-4401-b577-fa1210227054" />
 
 
-    Grafana は Logs Drilldown のセッションを自動的に Grafana の Explore セッションに変換し、LogQL クエリを自動入力してくれるので、ログのより詳細な分析をすぐに始められます。
+    Grafana は Logs Drilldown のセッションを自動的に Explore セッションに変換し、LogQL クエリも自動入力されるので、ログのより詳細な分析をすぐに始められます。
 
     次の点に注目してください。
 
