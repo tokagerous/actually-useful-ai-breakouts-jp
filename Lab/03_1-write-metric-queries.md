@@ -14,7 +14,7 @@ Loki では、特定の特性を持つログ行の数に基づいてメトリク
     {filename="/var/log/nginx/json_access.log"} |= "Googlebot"
     ```
 
-    googlebot のリクエストの JSON ログ行が取得されることが分かります。**ログ行をクリック**して詳細を確認します。
+    Googlebot のリクエストが JSON ログ行として表示されます。**ログ行をクリック**して詳細を確認してみましょう。
 
 3.  この時点では、Loki はまだ JSON を解析していません。ログ行はプレーンテキストのまま表示されます。ログ行を解析するには、`json` のようなパーサーを追加する必要があります。
 
@@ -38,7 +38,7 @@ Loki では、特定の特性を持つログ行の数に基づいてメトリク
     sum by(status) (count_over_time({filename="/var/log/nginx/json_access.log"} |= `Googlebot` | json [5m]))
     ```
 
-    これで Grafana は、Googlebot のリクエスト数を 1 分あたりで、（HTTP）ステータスコードごとに分けて表示します。
+    Grafana に、Googlebot のリクエスト数が（HTTP）ステータスコードごとに分かれて表示されます。
 
 >[!Tip]
 >Loki の LogQL クエリの内容を理解するには、**Explain query** トグルをクリックします。
