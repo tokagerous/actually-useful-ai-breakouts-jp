@@ -74,7 +74,7 @@
 
 8. パネルのタイトルを **Current % of request by Google** に設定し、**Back to dashboard** をクリックします。
 
-9.  **Save dashboard** ボタンで、ダッシュボードを保存するのを忘れないでください。
+9.  **Save dashboard** をクリックしてダッシュボードを保存します。
 
 ## ログ行の書き換え
 

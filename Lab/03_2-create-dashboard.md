@@ -47,7 +47,7 @@
 
     - パネルのタイトルを **Total requests per country** に変更します。
 
-10.  ダッシュボードに戻り、ここまでの作業を **save** します。
+10.  ダッシュボードに戻り、**Save dashboard** をクリックして保存します。
 
 ## さらにパネルを追加する
 他のパネルタイプを追加する手順については、オプションのラボを参照してください: [optional-add-more-panels.md](/Lab/optional-add-more-panels.md)
