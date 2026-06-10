@@ -1,58 +1,58 @@
-# 2.2. Query Logs
+# 2.2. ログをクエリする
 
-Let's now dive into some Loki querying, using Loki's LogQL query syntax.
+それでは、Loki の LogQL クエリ構文を使って、Loki のクエリを実際に試してみましょう。
 
-## Run a Loki query and view logs in a Table
+## Loki クエリを実行し、テーブルでログを表示する
 
-1.  In the main logs panel, open the context menu (three dots, at the top right of the panel, located near the _Logs / Table / JSON_ toggle), then click on **Explore**.
+1.  メインのログパネルでコンテキストメニュー（パネル右上、_Logs / Table / JSON_ トグルの近くにある 3 つの点）を開き、**Explore** をクリックします。
 
     <img width="1284" height="383" alt="image" src="https://github.com/user-attachments/assets/4bbdc5c3-f1fb-4401-b577-fa1210227054" />
 
 
-    Grafana automatically turns your Logs Drilldown session into a Grafana Explore session, filling in your LogQL query for you, so you can begin deeper analysis of the logs.
+    Grafana は Logs Drilldown のセッションを自動的に Grafana の Explore セッションに変換し、LogQL クエリを自動入力してくれるので、ログのより詳細な分析をすぐに始められます。
 
-    Notice how we can see:
+    次の点に注目してください。
 
-    - The LogQL query that was being used to perform our search
+    - 検索に使われていた LogQL クエリ
 
-    - The log volume over the current time period
+    - 現在の期間におけるログ量
 
 > [!Tip]
-> LogQL is the query language in Loki. A basic LogQL query looks like this:
+> LogQL は Loki のクエリ言語です。基本的な LogQL クエリは次のような形になります。
 >```
 > {my_label="value"} |= `foo`
 >```
 
 
-2.  Modify the LogQL query to remove the `status_code` and `http_method` label filters, as below. Then, click on **Run query**:
+2.  以下のように LogQL クエリを変更して `status_code` と `http_method` のラベルフィルターを削除します。その後、**Run query** をクリックします。
 
     ```
     {service_name=`web_app_3`} | json |~ `(?i)favicon\.ico`
     ```
 
-    _Label filters_ (`{label="value"}`) are the building blocks of any LogQL query. They allow Loki to find streams of logs.
+    _ラベルフィルター_（`{label="value"}`）は、あらゆる LogQL クエリの基本構成要素です。これにより、Loki はログのストリームを見つけられます。
 
-    This new query:
+    この新しいクエリは次の処理を行います。
 
-    - Finds all logs which have the label `service_name` equal to `web_app_3`.
+    - `service_name` ラベルが `web_app_3` に等しいログをすべて検索する。
 
-    - Parses each log line to extract JSON fields.
+    - 各ログ行を解析して JSON フィールドを抽出する。
 
-    - Filters the logs for lines containing the string `favicon.ico`
+    - 文字列 `favicon.ico` を含む行をフィルタリングする。
 
-3.  In the main **Logs** panel, click on the **Table** toggle in the right hand corner, if it is not already selected.
+3.  メインの **Logs** パネルで、まだ選択されていなければ、右隅の **Table** トグルをクリックします。
 
-    We can use the Table view to show logs in a tabular format, for easy scanning and analysis.
+    Table ビューを使うと、ログを表形式で表示でき、確認や分析が容易になります。
 
-    Labels, and fields that have been detected from the logs, are shown in the _Fields_ panel on the left hand side.
+    ログから検出されたラベルやフィールドは、左側の _Fields_ パネルに表示されます。
 
-4.  In the **Fields** panel, check the boxes by **status_code** and **http_method**.
+4.  **Fields** パネルで、**status_code** と **http_method** のチェックボックスをオンにします。
 
-    Now we can see columns for these two fields, allowing us to understand the logs more easily. The column _Line_ shows the original log line:
+    これで、この 2 つのフィールドの列が表示され、ログをより簡単に理解できます。_Line_ 列には元のログ行が表示されます。
 
     <img width="1546" height="747" alt="image" src="https://github.com/user-attachments/assets/c7438109-53a6-4812-a36c-8d368371fd24" />
 
 >[!Tip]
->From here, you can also download the logs in text, JSON or CSV formats by clicking on the **Download** button.
+>ここから、**Download** ボタンをクリックすると、ログをテキスト、JSON、CSV 形式でダウンロードすることもできます。
 
-Notice how we've been able to shape and explore our data at query time, using Loki's query-time JSON parser, and without having to index the content of the logs upfront!
+このように、Loki のクエリ時 JSON パーサーを使えば、ログの内容を事前にインデックス化することなく、クエリ実行時にデータを整形・探索できることが分かります。

@@ -1,23 +1,23 @@
-# Actually Useful AI Breakout Sessions
+# 実践的に役立つ AI ブレイクアウトセッション
 >[!IMPORTANT]
->[Set up your free trial](/set-up-your-free-trial.md) if you have not done so. You will need it for the lab exercises.
+>まだ設定していない場合は、[無料トライアルをセットアップ](/set-up-your-free-trial.md)してください。ラボ演習で必要になります。
 
-## Breakouts
-**1. Connect Data Sources**
-  - [Connect to logs data sources to start](/Lab/01-connect-data-sources.md)
+## ブレイクアウト
+**1. データソースを接続する**
+  - [まずはログのデータソースに接続する](/Lab/01-connect-data-sources.md)
 
-**2. Explore Logs**
-  - [Queryless exploration of logs via Drilldown Apps](/Lab/02_1-explore-logs-queryless.md)
-  - [Write Loki queries](/Lab/02_2-query-logs.md)
+**2. ログを探索する**
+  - [Drilldown アプリでクエリを書かずにログを探索する](/Lab/02_1-explore-logs-queryless.md)
+  - [Loki クエリを書く](/Lab/02_2-query-logs.md)
 
-**3. Create Dashboards**
-  - [Write metric queries](/Lab/03_1-write-metric-queries.md)
-  - [Create panels and dashboards](/Lab/03_2-create-dashboard.md)
-  - [Import a dashboard](/Lab/03_3-import-dashboard.md)
+**3. ダッシュボードを作成する**
+  - [メトリクスクエリを書く](/Lab/03_1-write-metric-queries.md)
+  - [パネルとダッシュボードを作成する](/Lab/03_2-create-dashboard.md)
+  - [ダッシュボードをインポートする](/Lab/03_3-import-dashboard.md)
 
-**4. Assistant Challenge**
-  - [Challenge: Actually useful prompts!](/Lab/04-assistant-challenge.md)
+**4. アシスタントチャレンジ**
+  - [チャレンジ: 実践的に役立つプロンプト！](/Lab/04-assistant-challenge.md)
 
 
-Read more about [Grafana Assistant](https://grafana.com/docs/grafana-cloud/machine-learning/assistant/get-started/).
+[Grafana Assistant](https://grafana.com/docs/grafana-cloud/machine-learning/assistant/get-started/) の詳細については、こちらをご覧ください。
 <img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/b603e1df-916d-4ed8-91f9-93bacbd4010a" />

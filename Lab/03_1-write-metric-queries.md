@@ -1,80 +1,80 @@
-# 3.1. Write metric queries
+# 3.1. メトリクスクエリを書く
 
-## Calculate a metric from log lines
+## ログ行からメトリクスを計算する
 
-In Loki, you can easily calculate metrics based on the number of log lines that have certain properties -- for example, the rate of error logs. This is called **log range aggregation**. 
+Loki では、特定の特性を持つログ行の数に基づいてメトリクスを簡単に計算できます。たとえば、エラーログの発生率などです。これは **ログ範囲集計（log range aggregation）** と呼ばれます。
 
-In this section of the workshop we will analyze log volume, using Loki's query-time JSON parsing, and LogQL metric functions `count_over_time` and `sum`.
+このワークショップのセクションでは、Loki のクエリ時 JSON 解析と、LogQL のメトリクス関数 `count_over_time` および `sum` を使って、ログ量を分析します。
 
-1.  From the Grafana main menu, choose **Explore** and then from the data source picker, select the **LokiNGINX** datasource.
+1.  Grafana のメインメニューから **Explore** を選択し、データソースピッカーで **LokiNGINX** データソースを選択します。
 
-2.  Click on the **Code** button to show the LogQL code editor. Paste the following query into the query box then press **Run query**:
+2.  **Code** ボタンをクリックして LogQL のコードエディターを表示します。以下のクエリをクエリボックスに貼り付け、**Run query** を押します。
 
     ```
     {filename="/var/log/nginx/json_access.log"} |= "Googlebot"
     ```
 
-    Notice that you get JSON log lines of googlebot requests. **Click a log line** to see its details.
+    googlebot のリクエストの JSON ログ行が取得されることが分かります。**ログ行をクリック**して詳細を確認します。
 
-3.  At this point, Loki hasn't yet parsed the JSON. It shows the log line in plain text. To parse the log line, we need to add a parser, like `json`.
+3.  この時点では、Loki はまだ JSON を解析していません。ログ行はプレーンテキストのまま表示されます。ログ行を解析するには、`json` のようなパーサーを追加する必要があります。
 
-    **Change the query** to the following and then press **Run query**:
+    **クエリを次のように変更**し、**Run query** を押します。
 
     ```
     {filename="/var/log/nginx/json_access.log"} |= "Googlebot" | json
     ```
 
-    Now **click a log line** to expand it. 
-    
-    Notice how the fields from the JSON message have been parsed by Loki and are now shown in the _Fields_ panel. We can now use these fields in a metric query. 
-    
-    This screenshot highlights just a couple of the fields that have been extracted:
+    では、**ログ行をクリック**して展開します。
+
+    JSON メッセージのフィールドが Loki によって解析され、_Fields_ パネルに表示されるようになったことが分かります。これらのフィールドは、メトリクスクエリで使用できます。
+
+    このスクリーンショットでは、抽出されたフィールドのうち、いくつかをハイライトしています。
 
     <img width="1255" height="732" alt="image" src="https://github.com/user-attachments/assets/1a979299-a6dc-4a57-beb6-7e85df4b0fae" />
 
-4.  Edit the query to this and then run it:
+4.  クエリを次のように編集して実行します。
 
     ```
     sum by(status) (count_over_time({filename="/var/log/nginx/json_access.log"} |= `Googlebot` | json [5m]))
     ```
 
-    Now Grafana will show the amount of Googlebot requests per minute, split by (HTTP) status code.
+    これで Grafana は、Googlebot のリクエスト数を 1 分あたりで、（HTTP）ステータスコードごとに分けて表示します。
 
 >[!Tip]
->To understand a Loki LogQL query, click on the **Explain query** toggle.
+>Loki の LogQL クエリの内容を理解するには、**Explain query** トグルをクリックします。
 
-5.  Click the **+ Add query** button and paste in the following query, which calculates the total number of log entries over time in our NGINX log:
+5.  **+ Add query** ボタンをクリックし、以下のクエリを貼り付けます。これは、NGINX ログ内のログエントリの総数を時系列で計算します。
 
     ```
     sum by (request_method) (count_over_time({filename="/var/log/nginx/json_access.log"} | json [5m]))
     ```
 
-    Grafana shows the results of the two queries together, in the same graph. This graph allows us to see:
+    Grafana は 2 つのクエリの結果を同じグラフにまとめて表示します。このグラフでは次のことが分かります。
 
-    - The total number of requests over time
-    - The number of requests which came from Googlebot, broken down by HTTP status code
-    - The proportion of Googlebot requests, compared to all requests
+    - 時系列でのリクエストの総数
+    - Googlebot から送信されたリクエスト数（HTTP ステータスコードごとの内訳）
+    - 全リクエストに対する Googlebot リクエストの割合
 
-    This information was extracted by Loki in real time, without having to parse logs upfront.
+    この情報は、ログを事前に解析することなく、Loki によってリアルタイムで抽出されたものです。
 
-## Optional: Calculate a metric based on a value in the log
+## オプション: ログ内の値に基づいてメトリクスを計算する
 
-In Loki, you can also calculate metrics using values inside the log line itself -- for example, graphing the average response time, or the average payload size over time. This is called an **unwrapped range aggregation**. It uses the `unwrap` function to pass a field from the log line to a metric function, such as `avg_over_time` or `max_over_time`.
+Loki では、ログ行自体に含まれる値を使ってメトリクスを計算することもできます。たとえば、平均応答時間や、ペイロードサイズの平均を時系列でグラフ化するといったことです。これは **アンラップ範囲集計（unwrapped range aggregation）** と呼ばれます。`unwrap` 関数を使って、ログ行のフィールドを `avg_over_time` や `max_over_time` などのメトリクス関数に渡します。
 
-1. Run the following query to extract the `bytes_sent` field from every JSON log line. This will draw a chart of how many avg bytes are requested by GoogleBot for every 5 minutes:
+1. 以下のクエリを実行して、各 JSON ログ行から `bytes_sent` フィールドを抽出します。これにより、GoogleBot が 5 分ごとにリクエストした平均バイト数を示すチャートが描画されます。
 
     ```
     avg_over_time({filename="/var/log/nginx/json_access.log"} |= "Googlebot" | json | unwrap bytes_sent [5m]) by (host)
     ```
 
-2. Click the **+ Add query** button to add another query:
+2. **+ Add query** ボタンをクリックして、別のクエリを追加します。
 
     ```
     max_over_time({filename="/var/log/nginx/json_access.log"} |= "Googlebot" | json | unwrap bytes_sent [5m]) by (host)
     ```
-    Notice that a second metric series is added to the graph, where we return the max amount of response bytes within that `5m` interval.
+    2 つ目のメトリクス系列がグラフに追加され、その `5m` の間隔内における最大の応答バイト数が返されることが分かります。
 
 >[!NOTE]
->`max_over_time` calculates the maximum of all values in the specified interval (in this example, 5 minutes).
+>`max_over_time` は、指定された間隔（この例では 5 分）内のすべての値の最大値を計算します。
 
-The completed graph from this exercise shows us the average bytes sent by NGINX over time, as compared with the largest payload sent, over the same time period.
+この演習で完成したグラフには、NGINX が送信した平均バイト数と、同じ期間内に送信された最大のペイロードとの比較が表示されます。

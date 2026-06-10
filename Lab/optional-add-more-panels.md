@@ -1,17 +1,17 @@
-# Optional: Add more panels to your dashboard
+# オプション: ダッシュボードにさらにパネルを追加する
 
 >[!NOTE]
->For instructions to create your first dashboard, or a Geomap panel, refer to [03_2-create-dashboard.md](/Lab/03_2-create-dashboard.md)
+>最初のダッシュボードや Geomap パネルを作成する手順については、[03_2-create-dashboard.md](/Lab/03_2-create-dashboard.md) を参照してください。
 
-## Add a 95th percentile panel
+## 95 パーセンタイルのパネルを追加する
 
-We're now going to add a panel showing the 95th percentile of requests time:
+次に、リクエスト時間の 95 パーセンタイルを表示するパネルを追加します。
 
-1. Click the **Add Visualization** button.
+1. **Add Visualization** ボタンをクリックします。
 
-2. Select the **LokiNGINX** datasource.
+2. **LokiNGINX** データソースを選択します。
 
-3. Add the following query, which extracts the _request time_ from every log line, and calculates the 95th percentile of that value:
+3. 以下のクエリを追加します。これは、各ログ行から _request time_ を抽出し、その値の 95 パーセンタイルを計算します。
 
     ```
     quantile_over_time(0.95,{filename="/var/log/nginx/json_access.log"} 
@@ -21,11 +21,11 @@ We're now going to add a panel showing the 95th percentile of requests time:
         |  __error__=""  [5m]) by (host)
     ```
 
-    This query gives you insight into the near-worst-case performance of requests that weren't served from cache, broken down by host. 
-    
-    Specifically, _95th percentile_ means that 95% of the requests have a shorter response time than this value, while only 5% take longer. Percentiles are useful for identifying performance issues, or unusual patterns in request times for non-cached content, as it captures the slowest requests, without being overly influenced by rare, extreme outliers.
+    このクエリにより、キャッシュから提供されなかったリクエストの、ほぼ最悪ケースに近いパフォーマンスを、ホストごとに把握できます。
 
-4. Click **+ Add query** to add a second query to this panel, to show the max request time within every 1 min interval:
+    具体的には、_95 パーセンタイル_ とは、リクエストの 95% がこの値より短い応答時間で、残りの 5% だけがこれより長くかかることを意味します。パーセンタイルは、最も遅いリクエストを捉えつつ、まれな極端な外れ値に過度に影響されないため、キャッシュされていないコンテンツのリクエスト時間における、パフォーマンスの問題や異常なパターンを特定するのに役立ちます。
+
+4. **+ Add query** をクリックして、このパネルに 2 つ目のクエリを追加します。これは、1 分間隔ごとの最大リクエスト時間を表示します。
 
     ```
     max_over_time({filename="/var/log/nginx/json_access.log"} 
@@ -35,29 +35,29 @@ We're now going to add a panel showing the 95th percentile of requests time:
         |  __error__=""  [1m]) by (host)
     ```
 
-5. Click on the **Options** panel underneath each query, and:
+5. 各クエリの下にある **Options** パネルをクリックし、次のように設定します。
 
-    - set the **Legend** value of the 95th percentile query to : `{{host}} - 95%` 
+    - 95 パーセンタイルのクエリの **Legend** の値を `{{host}} - 95%` に設定する
 
-    - set the **Legend** value of the max_over_time query to `{{host}} - max`
+    - max_over_time のクエリの **Legend** の値を `{{host}} - max` に設定する
 
 >[!NOTE]
->The `{{host}}` placeholder tells Grafana to insert the `host` label from the Loki metric query result.
+>`{{host}}` というプレースホルダーは、Loki のメトリクスクエリ結果から `host` ラベルを挿入するよう Grafana に指示するものです。
 
 
-6.  In the **Panel options** sidebar, set the Panel Title to **95th percentile of Request Time** and then click the **Back to dashboard** button.
+6.  **Panel options** サイドバーで、パネルのタイトルを **95th percentile of Request Time** に設定し、**Back to dashboard** ボタンをクリックします。
 
-7.  Click **Save dashboard** to save your fine work so far!
+7.  **Save dashboard** をクリックして、ここまでの成果を保存しましょう。
   
-## Add a percentage of requests by Googlebot panel
+## Googlebot によるリクエストの割合を示すパネルを追加する
 
-We're now going to add a panel showing the percentage of request made by Google's webspider, Googlebot.
+次に、Google の Web スパイダーである Googlebot によって行われたリクエストの割合を表示するパネルを追加します。
 
-1. From the the upper right corner, click **Add** -> **Visualization**.
+1. 右上隅から **Add** -> **Visualization** をクリックします。
 
-2. Select the **LokiNGINX** datasource
+2. **LokiNGINX** データソースを選択します。
 
-3. Add the following query. Notice we are doing some math here with Loki metrics! In this case, we are calculating the percentage of requests from Googlebot compared with requests from any browser (`Mozilla`), per 10-minute interval: 
+3. 以下のクエリを追加します。ここでは Loki のメトリクスで計算を行っている点に注目してください。この例では、10 分間隔ごとに、任意のブラウザ（`Mozilla`）からのリクエストに対する Googlebot からのリクエストの割合を計算しています。
 
     ```
     sum(rate(({filename="/var/log/nginx/json_access.log"} 
@@ -66,41 +66,41 @@ We're now going to add a panel showing the percentage of request made by Google'
     (sum(rate(({filename="/var/log/nginx/json_access.log"} |= "Mozilla")[10m])) / 100)
     ```
 
-4. We want to show it as a total number, so in the panel settings on the right, at the top, change the Visualization to **Stat**.
+4. これを 1 つの数値として表示したいので、右側のパネル設定の上部で、Visualization を **Stat** に変更します。
 
-5. The Stat panel shows a large, bold number which is calculated by Grafana from the results. We want to show the current percentage, so scroll down to **Value options** and in the **Calculation** field, ensure that **Last** is selected.
+5. Stat パネルは、結果から Grafana が計算した大きな太字の数値を表示します。現在の割合を表示したいので、**Value options** までスクロールし、**Calculation** フィールドで **Last** が選択されていることを確認します。
 
-6. We want to make clear this metric is a percentage.  Under the **Standard Options** heading, find the **Unit** dropdown and choose **Misc -> Percent (0-100)**.
+6. このメトリクスが割合であることを明確にします。**Standard Options** の見出しの下で、**Unit** ドロップダウンを見つけ、**Misc -> Percent (0-100)** を選択します。
 
-8. Set the Panel Title to **Current % of request by Google** and click **Back to dashboard**.
+8. パネルのタイトルを **Current % of request by Google** に設定し、**Back to dashboard** をクリックします。
 
-9.  Don't forget to save your dashboard with the **Save dashboard** button.
+9.  **Save dashboard** ボタンで、ダッシュボードを保存するのを忘れないでください。
 
-## Rewriting log lines
+## ログ行の書き換え
 
-In Loki, you can transform log data during query execution using `line_format` for log lines and `label_format` for labels. This allows you to reshape your log data on-the-fly, extracting specific information or reformatting it for a more coherent view in a dashboard.
+Loki では、クエリ実行中にログデータを変換できます。ログ行には `line_format` を、ラベルには `label_format` を使用します。これにより、ログデータをその場で整形し直し、特定の情報を抽出したり、ダッシュボードでより分かりやすい形に再フォーマットしたりできます。
 
-You can find more documentation here: https://grafana.com/docs/loki/latest/query/log_queries/#line-format-expression
+ドキュメントはこちらで確認できます: https://grafana.com/docs/loki/latest/query/log_queries/#line-format-expression
 
-Let's reformat the results of our Loki query and visualize on our dashboard:
+Loki クエリの結果を再フォーマットして、ダッシュボードで可視化してみましょう。
 
-1.  From the dashboard, click **Add** then **Visualization**. 
+1.  ダッシュボードから **Add**、次に **Visualization** をクリックします。
 
-2.  Select the **LokiNGINX** datasource.
+2.  **LokiNGINX** データソースを選択します。
 
-3.  In the sidebar, in the dropdown at the top, select the **Logs** visualization.
+3.  サイドバー上部のドロップダウンで、**Logs** ビジュアライゼーションを選択します。
 
-1.  Add the following query into the query box:
+1.  以下のクエリをクエリボックスに追加します。
 
     ```
     {filename="/var/log/nginx/json_access.log"} | json | line_format "🚀 request for {{.request_uri}} with HTTP status: {{.status}} ✌️"
     ```
 
-    Notice how we:
-    - use the `json` parser to extract values from JSON at query time 
-    - use `line_format` to rewrite the log lines 
-    - reference JSON fields using the `{{.my_field}}` syntax
+    ここで行っていることに注目してください。
+    - `json` パーサーを使って、クエリ実行時に JSON から値を抽出する
+    - `line_format` を使ってログ行を書き換える
+    - `{{.my_field}}` という構文で JSON フィールドを参照する
 
-4.  Change the title of the panel to **Logs** and then return to your dashboard.
+4.  パネルのタイトルを **Logs** に変更し、ダッシュボードに戻ります。
 
-5.  Save your work.
+5.  作業を保存します。

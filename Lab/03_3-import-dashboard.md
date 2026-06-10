@@ -1,31 +1,31 @@
-# 3.3. Import a demo dashboard
+# 3.3. デモ用ダッシュボードをインポートする
 
-## Import the full NGINX analytics demo dashboard
+## NGINX 分析のデモ用ダッシュボード一式をインポートする
 
-We're going to import a full NGINX monitoring dashboard, built from Loki queries.
+Loki クエリで構築された、NGINX モニタリング用のダッシュボード一式をインポートします。
 
-1.  Click on the **+** menu at the top right, then click on **Import dashboard**.
+1.  右上の **+** メニューをクリックし、**Import dashboard** をクリックします。
 
-2.  In the **Find and import dashboards** box, paste in the value **24306**, then click **Load**
+2.  **Find and import dashboards** ボックスに **24306** という値を貼り付け、**Load** をクリックします。
 
-3.  When prompted, set the Loki datasource to **LokiNGINX**.
+3.  プロンプトが表示されたら、Loki データソースを **LokiNGINX** に設定します。
 
-4.  When the dashboard loads, ensure the following dashboard variables are set, using the dropdowns at the top of the screen:
+4.  ダッシュボードが読み込まれたら、画面上部のドロップダウンを使って、以下のダッシュボード変数が設定されていることを確認します。
 
-    - Set **Label name** to **filename**
+    - **Label name** を **filename** に設定する
 
-    - Set **Label value** to **/var/log/nginx/json_access.log**
+    - **Label value** を **/var/log/nginx/json_access.log** に設定する
 
-5. You can now explore the panels, like: 
+5. これで、次のようなパネルを探索できます。
 
-    - % of 5xx requests
+    - 5xx リクエストの割合
 
-    - Top requested pages
+    - リクエストの多いページ
 
-    - Top user agents
+    - ユーザーエージェントの上位
 
-    - Top IP addresses
+    - IP アドレスの上位
 
-    - Logs panel
+    - ログパネル
 
-6.  To see the LogQL queries that were used to fetch the data for each panel, hover over the panel, click on the context menu (three dots), and then click on **Explore**.
+6.  各パネルのデータ取得に使われた LogQL クエリを確認するには、パネルにカーソルを合わせ、コンテキストメニュー（3 つの点）をクリックし、**Explore** をクリックします。

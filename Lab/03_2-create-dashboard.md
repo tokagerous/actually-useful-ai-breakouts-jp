@@ -1,53 +1,53 @@
-# 3.2. Build a dashboard with Loki
+# 3.2. Loki でダッシュボードを作成する
 
-## Save a new dashboard
+## 新しいダッシュボードを保存する
 
-Let’s create our first Loki dashboard using label and metrics extraction queries.
+ラベル抽出クエリとメトリクス抽出クエリを使って、最初の Loki ダッシュボードを作成しましょう。
 
-1. Click the plus button in the top right of Grafana to create a new dashboard.
+1. Grafana 右上のプラスボタンをクリックして、新しいダッシュボードを作成します。
 
-2. Select **last 3 hours** in the time picker (top right)
+2. 時間範囲ピッカー（右上）で **last 3 hours** を選択します。
 
-3. Click **Save dashboard** and give your dashboard a name.
+3. **Save dashboard** をクリックし、ダッシュボードに名前を付けます。
 
-## Add a Geomap panel 
-We're now going to add a panel showing a Geomap using the country code that was added by geocoding the IP address. 
+## Geomap パネルを追加する
+次に、IP アドレスのジオコーディングによって付与された国コードを使って、Geomap を表示するパネルを追加します。
 
-1. Ensure you're in Edit mode in your dashboard. (From Grafana 11 onwards, you need to click the **Edit** button in the top right corner.)
+1. ダッシュボードが編集モードになっていることを確認します。（Grafana 11 以降では、右上隅の **Edit** ボタンをクリックする必要があります。）
 
-2. Click **Add** -> **New visualization**.
+2. **Add** -> **New visualization** をクリックします。
 
-3. Select the **LokiNGINX** datasource.
+3. **LokiNGINX** データソースを選択します。
 
-4. Paste the following query, which counts the log lines, grouped by the extracted country_code:
+4. 以下のクエリを貼り付けます。これは、抽出された country_code ごとにグループ化してログ行をカウントします。
 
     ```
     sum by (geoip_country_code) (count_over_time({filename="/var/log/nginx/json_access.log"} | json | __error__="" [1m]))
     ```
 
-5.  Underneath the query box, click **Options** to expand the options panel, and set the **Legend** value to `{{geoip_country_code}}`.
+5.  クエリボックスの下にある **Options** をクリックしてオプションパネルを展開し、**Legend** の値を `{{geoip_country_code}}` に設定します。
 
-6.  Above the query, click on the **Transformations** tab, then **+ Show more**. 
+6.  クエリの上にある **Transformations** タブをクリックし、**+ Show more** をクリックします。
 
-7.  From the transformations palette, add the **Reduce** transformation, and select the **Series to rows** Mode. For the **Calculations** field, select **Total**.
+7.  トランスフォーメーションのパレットから **Reduce** トランスフォーメーションを追加し、**Series to rows** モードを選択します。**Calculations** フィールドには **Total** を選択します。
 
-8.  In the sidebar, click on **All visualizations** at the top and search for the panel type to **Geomap**.
+8.  サイドバー上部の **All visualizations** をクリックし、パネルタイプとして **Geomap** を検索します。
 
-9.  In the **Panel options** sidebar, change the following settings:
+9.  **Panel options** サイドバーで、以下の設定を変更します。
 
-    - Under **Map layers**, change the **Layer type** to **ArcGIS MapServer**.
-    - Click the **Add layer** button and add a new layer of type **Markers**. This will add a new layer above the existing layer. It's important for visualization that the ArcGis MapServer layer is shown underneath the Markers.
-    - Click on the new **Markers** layer, and:
-        - change **Location Mode** from **Auto** to **Lookup**
-        - change the **Lookup field** to **Field**
-        - Make sure the **Gazetteer** field is **Countries**
-        - Make sure **Styles Size** field is **Total**, with Min 10 and Max 40
-        - Make sure **Color** is **Fixed Color** and pick the **red** color
-        - Set **Fill opacity** to **0.8**
+    - **Map layers** で、**Layer type** を **ArcGIS MapServer** に変更します。
+    - **Add layer** ボタンをクリックし、**Markers** タイプの新しいレイヤーを追加します。これにより、既存のレイヤーの上に新しいレイヤーが追加されます。可視化のためには、ArcGIS MapServer レイヤーが Markers の下に表示されることが重要です。
+    - 新しく追加した **Markers** レイヤーをクリックし、次のように設定します。
+        - **Location Mode** を **Auto** から **Lookup** に変更する
+        - **Lookup field** を **Field** に変更する
+        - **Gazetteer** フィールドが **Countries** になっていることを確認する
+        - **Styles Size** フィールドが **Total** で、Min が 10、Max が 40 になっていることを確認する
+        - **Color** が **Fixed Color** で、**red** の色が選択されていることを確認する
+        - **Fill opacity** を **0.8** に設定する
 
-    - Change the panel title to **Total requests per country**.
+    - パネルのタイトルを **Total requests per country** に変更します。
 
-10.  Return to your dashboard and **save** your progress.
+10.  ダッシュボードに戻り、ここまでの作業を **save** します。
 
-## Add more panels
-For a guide to adding more panel types, refer to optional lab: [optional-add-more-panels.md](/Lab/optional-add-more-panels.md)
+## さらにパネルを追加する
+他のパネルタイプを追加する手順については、オプションのラボを参照してください: [optional-add-more-panels.md](/Lab/optional-add-more-panels.md)

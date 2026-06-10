@@ -1,34 +1,34 @@
-# 🧠 Challenge: Actually Useful Prompts
+# 🧠 チャレンジ: 実践的に役立つプロンプト
 
-You’ve made it to the last exercise!
+最後の演習までたどり着きました。
 
-By now you should have:
-- Logs flowing into **Grafana Cloud Logs** (and metrics and traces if you have done the optional exercises)
-- Explored logs in Grafana Cloud via query and no query (drilldown logs)
-- Created panels and dashboards
-- Imported a full NGINX analytics demo dashboard
+ここまでで、次のことができているはずです。
+- ログが **Grafana Cloud Logs** に流れ込んでいる（オプション演習を行った場合はメトリクスとトレースも）
+- クエリありとクエリなし（drilldown logs）の両方で、Grafana Cloud 上のログを探索した
+- パネルとダッシュボードを作成した
+- NGINX 分析のデモ用ダッシュボード一式をインポートした
 
-## The Goal
+## ゴール
 
-You get **5 prompts** with Grafana Assistant in your free Grafana Cloud account. Let's use them to get some **useful** insights out of your logs.
+無料の Grafana Cloud アカウントでは、Grafana Assistant のプロンプトを **5 回** 利用できます。これを使って、ログから **役立つ** インサイトを引き出しましょう。
 
-At the end of this breakout, be ready to share your **best 1–2 prompts**, including the responses and a short note on why they are useful, and when you would use this in real life.
+このブレイクアウトの最後に、**ベストな 1〜2 個のプロンプト** を、その回答と、なぜ役立つのか、また実際にどんな場面で使うのかについての短いメモとともに共有できるよう準備しておいてください。
 
 >[!TIP]
->Think like someone on-call. Good and useful prompts usually try to:
->  - Find errors that matter
->  - Spot patterns before they become incidents
->  - Suggest what to look at next
->  - Reduce toil by performing actions/tasks
+>オンコール担当者の視点で考えてみましょう。優れた、役立つプロンプトは、たいてい次のことを目指しています。
+>  - 重要なエラーを見つける
+>  - インシデントになる前にパターンを察知する
+>  - 次に確認すべきことを提案する
+>  - アクションやタスクを実行して手作業を減らす
 
-## Prompt Ideas
+## プロンプトのアイデア
 
-Here are some prompt examples to get your juices flowing:
+発想のきっかけになるよう、いくつかプロンプトの例を挙げます。
 
-- “What are the most common causes of 5xx errors in my NGINX logs?”
-- “Are there any unusual spikes in request patterns or status codes?”
-- “Show me suspicious or abnormal request sequences”
-- “If I were debugging this system, what should I investigate first?”
+- 「私の NGINX ログで 5xx エラーが発生する最も一般的な原因は何ですか？」
+- 「リクエストパターンやステータスコードに、異常なスパイクはありますか？」
+- 「不審な、または異常なリクエストのシーケンスを見せてください」
+- 「このシステムをデバッグするなら、まず何を調べるべきですか？」
 
 >[!IMPORTANT]
->Reminder: Your free Grafana Cloud account comes with 5 free prompts. Make them count!
+>注意: 無料の Grafana Cloud アカウントには、無料のプロンプトが 5 回付いています。無駄なく活用しましょう。
